@@ -45,7 +45,9 @@ mongoose.connect("mongodb://localhost:27017/shopping", {
 const userSchema = new mongoose.Schema({
     name: String,
     email: String,
-    password: String
+    password: String,
+    contact: String,
+    city: String
 })
 
 const User = new mongoose.model("User", userSchema)
@@ -66,8 +68,8 @@ app.post("/login", (req, res)=> {
     })
 }) 
 
-app.post("/register", (req, res)=> {
-    const { name, email, password} = req.body
+app.post("/sign-up", (req, res)=> {
+    const { name, email, password, contact, city,address} = req.body
     User.findOne({email: email}, (err, user) => {
         if(user){
             res.send({message: "User already registerd"})
@@ -75,7 +77,10 @@ app.post("/register", (req, res)=> {
             const user = new User({
                 name,
                 email,
-                password
+                password,
+                contact,
+                city,
+                address
             })
             user.save(err => {
                 if(err) {
